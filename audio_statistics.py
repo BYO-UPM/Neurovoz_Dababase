@@ -23,14 +23,6 @@ def general_statistic():
 
     # The filename of the audio is composed by condition_audiotype_patientId.wav
     # We can split the filename by "_" and get the condition, audiotype and patientId
-    conditions_hc = [audio.split("_")[0] for audio in audios_hc]
-    conditions_pd = [audio.split("_")[0] for audio in audios_pd]
-
-    audiotype_hc = [audio.split("_")[1] for audio in audios_hc]
-    audiotype_pd = [audio.split("_")[1] for audio in audios_pd]
-
-    patientId_hc = [audio.split("_")[2].split(".")[0] for audio in audios_hc]
-    patientId_pd = [audio.split("_")[2].split(".")[0] for audio in audios_pd]
 
     # Select all vowels. They have an audiotype of len 2, which is the vowel and the recording number
     vowels_hc = [audio for audio in audios_hc if len(audio.split("_")[1]) == 2]

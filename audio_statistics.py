@@ -1,5 +1,7 @@
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 
 def load_data():
@@ -132,6 +134,19 @@ def general_statistic():
     print(f"Mean duration of sentences in patients: {np.mean(durations_pd)}")
     print(f"Std duration of sentences in patients: {np.std(durations_pd)}")
     print(f"Failed audios in patients: {failed_audios}")
+
+    plt.figure(figsize=(12, 5))
+    plt.subplot(1, 2, 1)
+    sns.histplot(df_pd.groupby("ID").first()["UPDRS scale"], kde=True, color="skyblue")
+    plt.title("Distribution of UPDRS Scale")
+
+    # Plotting the distribution of H-Y stadium
+    plt.subplot(1, 2, 2)
+    sns.countplot(x="H-Y Stadium", data=df_pd.groupby("ID").first(), palette="Set2")
+    plt.title("Distribution of H-Y Stadium")
+
+    plt.tight_layout()
+    plt.show()
 
 
 def main():

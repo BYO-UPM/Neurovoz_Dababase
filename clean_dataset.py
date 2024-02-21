@@ -205,19 +205,18 @@ def main():
     data_hc = data_hc.merge(audio_ids_path_df, on="ID")
 
     # Translate all str columsn to english
-    # model = EasyNMT("opus-mt")
-    # # Translate columns
-    # for column in data_pd.columns:
-    #     if data_pd[column].dtype == "object":
-    #         data_pd[column] = model.translate(
-    #             data_pd[column].astype(str), source_lang="es", target_lang="en"
-    #         )
+    model = EasyNMT("opus-mt")
+    # Translate columns
+    for column in ["Observations"]:
 
-    # for column in data_hc.columns:
-    #     if data_hc[column].dtype == "object":
-    #         data_hc[column] = model.translate(
-    #             data_hc[column].astype(str), source_lang="es", target_lang="en"
-    #         )
+        data_pd[column] = model.translate(
+            data_pd[column].astype(str), source_lang="es", target_lang="en"
+        )
+
+    for column in ["Observations"]:
+        data_hc[column] = model.translate(
+            data_hc[column].astype(str), source_lang="es", target_lang="en"
+        )
 
     # Categorize Vocal tremor,Cephalic tremor,Mandibular tremor,Sialorrhoea,Dysphagia,Hypophonic voice columns
     data_pd = categorize_column(data_pd, "Vocal tremor")
@@ -354,6 +353,10 @@ def main():
     data_hc["Labour situation"] = data_hc["Labour situation"].replace(
         "professor", "professor"
     )
+
+    # Drop "Review" column
+    data_pd = data_pd.drop(columns=["Review "])
+    data_hc = data_hc.drop(columns=["Review "])
 
     # Save the dataframes
     data_pd.to_csv("data/data_pd.csv", index=False)

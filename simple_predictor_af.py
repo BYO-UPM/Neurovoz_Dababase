@@ -5,7 +5,11 @@
 
 import pandas as pd
 from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.metrics import classification_report, balanced_accuracy_score, accuracy_score
+from sklearn.metrics import (
+    classification_report,
+    balanced_accuracy_score,
+    accuracy_score,
+)
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
@@ -22,6 +26,9 @@ af["Label"] = af["AudioPath"].apply(lambda x: x.split("/")[-1].split("_")[0])
 # Convert labels from strings to integers (HC=0, PD=1)
 af["Label"] = af["Label"].replace({"HC": 0, "PD": 1})
 
+# Get ids of patients
+ids = af["AudioPath"].apply(lambda x: x.split("/")[-1].split("_")[2])
+
 # Drop the 'AudioPath' column as it's no longer needed
 af.drop(columns=["AudioPath"], inplace=True)
 
@@ -29,13 +36,21 @@ af.drop(columns=["AudioPath"], inplace=True)
 X = af.drop(columns=["Label"])
 y = af["Label"]
 
-# Split the data into training and testing sets (80% train, 20% test)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Split the data into training and testing sets (80% train, 20% test) ensure that ids are not in both sets
+unique_ids = ids.unique()
+ids_train, ids_test = train_test_split(unique_ids, test_size=0.2, random_state=42)
+X_train = X[ids.isin(ids_train)]
+y_train = y[ids.isin(ids_train)]
+X_test = X[ids.isin(ids_test)]
+y_test = y[ids.isin(ids_test)]
 
 # Standardize the features by removing the mean and scaling to unit variance
 scaler = StandardScaler()
 X_train.fillna(X_train.mean(), inplace=True)
-X_test.fillna(X_train.mean(), inplace=True)  # Use training mean to fill missing values in test set
+X_test.fillna(
+    X_train.mean(), inplace=True
+)  # Use training mean to fill missing values in test set
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
@@ -55,7 +70,9 @@ param_grid_rf = {
 }
 
 # Perform grid search to find the best parameters
-grid_search_rf = GridSearchCV(estimator=rf, param_grid=param_grid_rf, cv=3, n_jobs=-1, verbose=0)
+grid_search_rf = GridSearchCV(
+    estimator=rf, param_grid=param_grid_rf, cv=3, n_jobs=-1, verbose=0
+)
 grid_search_rf.fit(X_train, y_train)
 
 # Train the model with the best parameters found
@@ -83,7 +100,9 @@ param_grid_lr = {
 }
 
 # Perform grid search to find the best parameters
-grid_search_lr = GridSearchCV(estimator=lr, param_grid=param_grid_lr, cv=3, n_jobs=-1, verbose=0)
+grid_search_lr = GridSearchCV(
+    estimator=lr, param_grid=param_grid_lr, cv=3, n_jobs=-1, verbose=0
+)
 grid_search_lr.fit(X_train, y_train)
 
 # Predict with the best LogisticRegression model and evaluate

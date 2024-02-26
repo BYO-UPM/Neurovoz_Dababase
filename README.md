@@ -28,7 +28,30 @@ The repository is structured to include scripts for audio classification using R
 
 ## Getting Started
 
-To use the scripts in this repository, clone the repository to your local machine and ensure you have the required dependencies installed. Most scripts require libraries such as `librosa`, `torch`, `timm`, `pandas`, `scikit-learn`, and others. You can install these dependencies using pip:
+The requirements of the project are listed in the `requirements.txt` file. To install the necessary packages, run the following command:
 
 ```bash
-pip install librosa torch timm pandas scikit-learn
+conda create --name <env> --file requirements.txt
+```
+
+## Usage
+
+To use the classification scripts, run the following command:
+
+```bash
+python simple_predictor_audio.py
+```
+
+```bash
+python simple_predictor_af.py
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a pull request or open an issue if you encounter any problems.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments

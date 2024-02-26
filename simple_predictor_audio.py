@@ -8,7 +8,7 @@ from torch.utils.data import Dataset, DataLoader
 from torchvision.transforms import ToTensor
 
 # Assuming `data/audio` is the path where your audio files are stored
-audio_path = 'data/audio'
+audio_path = 'data/audios'
 audio_files = [os.path.join(audio_path, f) for f in os.listdir(audio_path) if f.endswith('.wav')]
 
 def extract_label(filename):
@@ -22,6 +22,7 @@ def audio_to_melspectrogram(audio_file):
     mels_db = librosa.power_to_db(mels, ref=np.max)
     return mels_db
 
+print("Reading audio files and extracting labels...")
 # Process all audio files and extract labels
 data = []
 labels = []
@@ -32,6 +33,7 @@ for file in audio_files:
     labels.append(label)
 
 # Split data into train and test sets
+print("Splitting data into train and test sets...")
 X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=0.2, random_state=42)
 
 # Define a custom dataset
@@ -60,6 +62,7 @@ train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
 test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False)
 
 # Load a pre-trained model from timm
+print("Loading pre-trained model...")
 model = timm.create_model('resnet18', pretrained=True, num_classes=2)
 
 # Adapt the model for 1-channel input if necessary
@@ -69,8 +72,9 @@ model.conv1 = torch.nn.Conv2d(1, model.conv1.out_channels, kernel_size=model.con
 criterion = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
+print("Training the model...")
 # Training loop (simplified for demonstration)
-for epoch in range(1):  # loop over the dataset multiple times
+for epoch in range(3):  # loop over the dataset multiple times
     for i, data in enumerate(train_loader, 0):
         inputs, labels = data
         optimizer.zero_grad()
@@ -80,6 +84,7 @@ for epoch in range(1):  # loop over the dataset multiple times
         optimizer.step()
 
 # Prediction on the test dataset (simplified)
+print("Making predictions...")
 predictions = []
 model.eval()
 with torch.no_grad():

@@ -9,7 +9,7 @@ def find_wav_files(root_dir):
     """
     Find all .wav files in the specified directory and its subdirectories.
     """
-    return glob.glob(os.path.join(root_dir, "**", "*.wav"), recursive=True)
+    return glob.glob(os.path.join(root_dir, "*.wav"), recursive=True)
 
 
 def extract_patient_ids(filenames):
@@ -127,7 +127,7 @@ def clean_excel(excel_path):
 
 
 def main():
-    root_dir = "/media/my_ftp/BasesDeDatos_Voz_Habla/Neurovoz/PorMaterial_limpios1_2"  # Change this to your directory path
+    root_dir = "data/audios"  # Change this to your directory path
     wav_files = find_wav_files(root_dir)
     patient_ids = extract_patient_ids(wav_files)
     conditions = extract_condition(wav_files)
@@ -252,11 +252,11 @@ def main():
     data_pd["Diagnosis"] = data_pd["Diagnosis"].fillna("Unknown")
 
     # IF the diagnosis starts with "enfermedad", we will create a new column named "Binary diagnosis" and will fill it with PD
-    idx_enfermedad = data_pd["Diagnosis"].str.lower().str.startswith("enfermedad")
-    data_pd.loc[idx_enfermedad, "Binary diagnosis"] = "PD"
-    # If the diagnosis starts with "sindrome", we will create a new column named "Binary diagnosis" and will fill it with PS
-    idx_sindrome = data_pd["Diagnosis"].str.lower().str.startswith("sindrome")
-    data_pd.loc[idx_sindrome, "Binary diagnosis"] = "PS"
+    # idx_enfermedad = data_pd["Diagnosis"].str.lower().str.startswith("enfermedad")
+    # data_pd.loc[idx_enfermedad, "Binary diagnosis"] = "PD"
+    # # If the diagnosis starts with "sindrome", we will create a new column named "Binary diagnosis" and will fill it with PS
+    # idx_sindrome = data_pd["Diagnosis"].str.lower().str.startswith("sindrome")
+    # data_pd.loc[idx_sindrome, "Binary diagnosis"] = "PS"
 
     data_hc["Diagnosis"] = (
         data_hc["Diagnosis"]

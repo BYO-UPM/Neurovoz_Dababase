@@ -64,17 +64,6 @@ def general_statistic():
     msno.matrix(df_pd.groupby(["ID"]).first())
     plt.savefig("missing_data_pd.png")
 
-    # Get the number of patients per condition
-    print("=============== Number of patients per condition ===============")
-    print(df_pd["Binary diagnosis"].value_counts())
-    # Number of unique conditions
-    print(f"Number of unique conditions: {len(df_pd['Binary diagnosis'].unique())}")
-    # Get the number of patients per condition in percentage
-    print(
-        "=============== Number of patients per condition in percentage ==============="
-    )
-    print(df_pd["Binary diagnosis"].value_counts() / len(df_pd))
-
     # The columns "Vocal tremor',
     #   'Cephalic tremor', 'Mandibular tremor', 'Sialorrhoea', 'Dysphagia',
     #   'Hypophonic voice'
@@ -102,5 +91,16 @@ def general_statistic():
     plt.show()
 
 
+    # Number of columsn in the dataset
+    print("=============== Number of columns ===============")
+    print(f"Number of columns in the healthy dataset: {len(df_hc.columns)}")
+    print(f"Number of columns in the patient dataset: {len(df_pd.columns)}")
+    
+
+
 def main():
     general_statistic()
+
+
+if __name__ == "__main__":
+    main()

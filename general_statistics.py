@@ -6,8 +6,8 @@ def load_data():
     """
     Load the dataset from the CSV file.
     """
-    df_hc = pd.read_csv("data/data_hc.csv")
-    df_pd = pd.read_csv("data/data_pd.csv")
+    df_hc = pd.read_csv("data/metadata/data_hc.csv")
+    df_pd = pd.read_csv("data/metadata/data_pd.csv")
     return df_hc, df_pd
 
 
@@ -90,12 +90,53 @@ def general_statistic():
     plt.tight_layout()
     plt.show()
 
+    # rename hy stadium for hc scale
+    df_hc.rename(columns={"H-Y Stadium": "H-Y scale"}, inplace=True)
+    df_pd.rename(columns={"H-Y Stadium": "H-Y scale"}, inplace=True)
+
+    # Plotting the distribution of UPDRS scale
+    plt.figure(figsize=(12, 5))
+    plt.subplot(1, 2, 1)
+    sns.histplot(df_pd.groupby("ID").first()["UPDRS scale"], kde=True, color="skyblue")
+    plt.title("Distribution of UPDRS Scale")
+
+    # Plotting the distribution of H-Y stadium
+    plt.subplot(1, 2, 2)
+    sns.countplot(x="H-Y scale", data=df_pd.groupby("ID").first(), palette="Set2")
+    plt.title("Distribution of H-Y scale")
+
+    plt.tight_layout()
+    # saveit
+    plt.savefig("updrs_hy.png")
+    plt.show()
+
+    # Boxplot for UPDRS scale and H-Y stadium
+    plt.figure(figsize=(12, 5))
+    plt.subplot(1, 2, 1)
+    sns.boxplot(y=df_pd.groupby("ID").first()["UPDRS scale"], color="lightblue")
+    plt.title("Box Plot of UPDRS Scale")
+
+    plt.subplot(1, 2, 2)
+    sns.boxplot(y=df_pd.groupby("ID").first()["H-Y scale"], color="lightgreen")
+    plt.title("Box Plot of H-Y Scale")
+
+    plt.tight_layout()
+    plt.show()
+
+    # Descriptive Statistics
+    print(
+        "Descriptive Statistics for UPDRS Scale:\n",
+        df_pd.groupby("ID").first()["UPDRS scale"].describe(),
+    )
+    print(
+        "\nDescriptive Statistics for H-Y Stadium:\n",
+        df_pd.groupby("ID").first()["H-Y scale"].value_counts().sort_index(),
+    )
 
     # Number of columsn in the dataset
     print("=============== Number of columns ===============")
     print(f"Number of columns in the healthy dataset: {len(df_hc.columns)}")
     print(f"Number of columns in the patient dataset: {len(df_pd.columns)}")
-    
 
 
 def main():

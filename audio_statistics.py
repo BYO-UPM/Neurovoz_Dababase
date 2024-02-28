@@ -23,15 +23,29 @@ def general_statistic():
     audios_hc = df_hc["Audio"].tolist()
     audios_pd = df_pd["Audio"].tolist()
 
+    # Get total hours of audio registered
+    import librosa
+
+    total_hours_hc = 0
+    for audio in audios_hc:
+        y, sr = librosa.load(audio)
+        total_hours_hc += librosa.get_duration(y=y, sr=sr)
+
+    total_hours_pd = 0
+    for audio in audios_pd:
+        y, sr = librosa.load(audio)
+        total_hours_pd += librosa.get_duration(y=y, sr=sr)
+
+    print(f"Total hours of audio in healthy controls: {total_hours_hc / 3600}")
+    print(f"Total hours of audio in patients: {total_hours_pd / 3600}")
+    print(f"Total hours of audio: {(total_hours_hc + total_hours_pd) / 3600}")
+
     # The filename of the audio is composed by condition_audiotype_patientId.wav
     # We can split the filename by "_" and get the condition, audiotype and patientId
 
     # Select all vowels. They have an audiotype of len 2, which is the vowel and the recording number
     vowels_hc = [audio for audio in audios_hc if len(audio.split("_")[1]) == 2]
     vowels_pd = [audio for audio in audios_pd if len(audio.split("_")[1]) == 2]
-
-    # Check the mean and std duration of the vowels using librosa
-    import librosa
 
     # Use try and catch to avoid errors in the audios
     durations_hc = []
@@ -151,3 +165,7 @@ def general_statistic():
 
 def main():
     general_statistic()
+
+
+if __name__ == "__main__":
+    main()

@@ -138,6 +138,39 @@ def general_statistic():
     print(f"Number of columns in the healthy dataset: {len(df_hc.columns)}")
     print(f"Number of columns in the patient dataset: {len(df_pd.columns)}")
 
+    # Graphs for sex and age distribution of both datasets
+    plt.figure(figsize=(14, 6))
+
+    # Histogram for 'Age'
+    plt.subplot(1, 2, 1)
+    sns.histplot(df_pd.groupby("ID").first()["Age"], bins=15, kde=True, color="skyblue")
+    plt.title("Age distribution for PD group.")
+
+    plt.subplot(1, 2, 2)
+    sns.histplot(df_hc.groupby("ID").first()["Age"], bins=15, kde=True, color="skyblue")
+    plt.title("Age distribution for HC group.")
+    plt.tight_layout()
+    plt.show()
+    plt.savefig("age_distro_distribution.png")
+
+    # Bar chart
+    plt.figure(figsize=(14, 6))
+
+    # Bar chart for 'Sex'
+    plt.subplot(1, 2, 1)
+    ax1 = sns.countplot(x="Sex", data=df_pd.groupby("ID").first(), palette="Set2")
+    ax1.set_xticks(range(2), labels=["Female", "Male"])
+    plt.title("Sex distribution for PD group.")
+
+    plt.subplot(1, 2, 2)
+    axs = sns.countplot(x="Sex", data=df_hc.groupby("ID").first(), palette="Set2")
+    axs.set_xticks(range(2), labels=["Female", "Male"])
+    plt.title("Sex distribution for HC group.")
+
+    plt.tight_layout()
+    plt.show()
+    plt.savefig("sex_distro_distribution.png")
+
 
 def main():
     general_statistic()

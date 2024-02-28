@@ -71,14 +71,14 @@ def categorize_column(df, column):
         idx_si = df[column].str.lower().str.startswith("poco")
         df.loc[idx_si, column] = "si"
 
+    # Ensure that nan is np.nan
+    df[column] = df[column].infer_objects(copy=False).replace("nan", np.nan)
+
     if column == "Doctor":
         # Velasquez and Velazquez are the same
         df[column] = df[column].replace("Velasquez", "Velazquez")
     df[column] = df[column].astype("category")
     df[column] = df[column].cat.codes
-    if column == "Sex":
-        # Substitue 2 for -1
-        df[column] = df[column].replace(2, -1)
 
     return df
 
@@ -96,6 +96,10 @@ def clean_excel(excel_path):
     # Rename "Médico" to "Doctor"
     data_pd = data_pd.rename(columns={"Médico": "Doctor"})
     data_hc = data_hc.rename(columns={"Médico": "Doctor"})
+
+    # Fill na with np.nan
+    data_pd = data_pd.infer_objects(copy=False).fillna(np.nan)
+    data_hc = data_hc.infer_objects(copy=False).fillna(np.nan)
 
     # Categorize Doctor to anonymize
     data_pd = categorize_column(data_pd, "Doctor")
@@ -122,6 +126,14 @@ def clean_excel(excel_path):
     data_hc.columns = model.translate(
         data_hc.columns, source_lang="es", target_lang="en"
     )
+
+    # Correct Age column: None should be np.nan and ? should be np.nan
+    data_pd["Age"] = data_pd["Age"].replace("None", np.nan)
+    data_pd["Age"] = data_pd["Age"].replace("?", np.nan)
+    data_pd["Age"] = data_pd["Age"].astype(float)
+    data_hc["Age"] = data_hc["Age"].replace("None", np.nan)
+    data_hc["Age"] = data_hc["Age"].replace("?", np.nan)
+    data_hc["Age"] = data_hc["Age"].astype(float)
 
     return data_pd, data_hc
 

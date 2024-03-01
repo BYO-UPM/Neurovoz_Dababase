@@ -8,8 +8,8 @@ def load_data():
     """
     Load the dataset from the CSV file.
     """
-    df_hc = pd.read_csv("data/data_hc.csv")
-    df_pd = pd.read_csv("data/data_pd.csv")
+    df_hc = pd.read_csv("data/metadata/data_hc.csv")
+    df_pd = pd.read_csv("data/metadata/data_pd.csv")
     return df_hc, df_pd
 
 
@@ -148,6 +148,40 @@ def general_statistic():
     print(f"Mean duration of sentences in patients: {np.mean(durations_pd)}")
     print(f"Std duration of sentences in patients: {np.std(durations_pd)}")
     print(f"Failed audios in patients: {failed_audios}")
+
+    # Check the mean and std duration of the "patakas" using librosa
+    patakas_hc = vowels_pd = [
+        audio for audio in audios_hc if audio.split("_")[1] == "PATAKA"
+    ]
+    patakas_pd = vowels_pd = [
+        audio for audio in audios_pd if audio.split("_")[1] == "PATAKA"
+    ]
+
+    durations_hc = []
+    failed_audios = []
+    for audio in patakas_hc:
+        try:
+            y, sr = librosa.load(audio)
+            durations_hc.append(librosa.get_duration(y=y, sr=sr))
+        except:
+            failed_audios.append(audio)
+            pass
+
+    print(f"Mean duration of patakas in healthy controls: {np.mean(durations_hc)}")
+    print(f"Std duration of patakas in healthy controls: {np.std(durations_hc)}")
+    print(f"Failed audios in healthy controls: {failed_audios}")
+
+    durations_pd = []
+    failed_audios = []
+    for audio in patakas_pd:
+        try:
+            y, sr = librosa.load(audio)
+            durations_pd.append(librosa.get_duration(y=y, sr=sr))
+        except:
+            failed_audios.append(audio)
+            pass
+    print(f"Mean duration of patakas in patients: {np.mean(durations_pd)}")
+    print(f"Std duration of patakas in patients: {np.std(durations_pd)}")
 
     plt.figure(figsize=(12, 5))
     plt.subplot(1, 2, 1)

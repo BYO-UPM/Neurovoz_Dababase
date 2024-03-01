@@ -153,6 +153,14 @@ def general_statistic():
     plt.show()
     plt.savefig("age_distro_distribution.png")
 
+    # Print mean and std age for PD and for HC
+    print("=============== Age ===============")
+    print(f"Mean age for PD: {np.mean(df_pd.groupby('ID').first()['Age'])}")
+    print(f"Std age for PD: {np.std(df_pd.groupby('ID').first()['Age'])}")
+
+    print(f"Mean age for HC: {np.mean(df_hc.groupby('ID').first()['Age'])}")
+    print(f"Std age for HC: {np.std(df_hc.groupby('ID').first()['Age'])}")
+
     # Bar chart
     plt.figure(figsize=(14, 6))
 
@@ -170,6 +178,13 @@ def general_statistic():
     plt.tight_layout()
     plt.show()
     plt.savefig("sex_distro_distribution.png")
+
+    # Print the value counts of the Diagnosis column
+    print("=============== Diagnosis ===============")
+    print("Value counts for PD")
+    print(df_pd.groupby("ID").first()["Diagnosis"].value_counts())
+    print("Value counts for HC")
+    print(df_hc.groupby("ID").first()["Diagnosis"].value_counts())
 
 
 def main():

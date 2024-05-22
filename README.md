@@ -3,6 +3,15 @@ A complete corpus comprising data from 108 Spanish Castilian speakers. This corp
 
 The dataset comprises 2,903 audio files, with an average of $26.88 \pm 3.35$ audio recordings per user. It provides valuable resources to the scientific community to systematically investigate the objective parkinson's effect on speech patterns.
 
+## Resources
+
+If you use this dataset, please cite both this Zenodo and the arXiv preprint:
+
+* **arXiv preprint:** J. Mendes-Laureano, J. A. Gómez-García, A. Guerrero-López,E. Luque-Buzo, J. D. Arias-Londoño, F. J. Grandas-Pérez, and J. I. Godino-Llorente, “Neurovoz: a castillian spanish corpus of parkinsonian speech,” arXiv preprint arXiv:2403.02371 (2024).
+Link: https://arxiv.org/abs/2403.02371
+
+
+* **Zenodo dataset:** Mendes-Laureano, J., Gómez-García, J. A., Guerrero-López, A., Luque-Buzo, E., Arias-Londoño, J. D., Grandas-Pérez, F. J., & Godino Llorente, J. I. (2024). NeuroVoz: a Castillian Spanish corpus of parkinsonian speech (1.0.0) [Data set]. Zenodo. https://doi.org/10.5281/zenodo.10777657
 
 ## Audio Classification and Analysis Repository
 

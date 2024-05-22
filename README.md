@@ -64,3 +64,8 @@ Contributions are welcome! Please feel free to submit a pull request or open an 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
+This work was funded by the Ministry of Economy and Competitiveness of Spain (grants PID2021-128469OB-I00 and TED2021-131688B-I00), and by Comunidad de Madrid, Spain. Universidad Politécnica de Madrid also supports Julián D. Arias-Londoño through a María Zambrano 2021 grant. This work is partially funded by the Spanish Ministry of Economy and Digital Transformation within the 2021 MisionesIA call, AI4HealthyAging.
+
+The authors thank the Departments of Neurology and Otorhinolaringology of Hospital General Universitario Gregorio Marañón, Madrid, for the facilities provided.
+
+Finally, the authors also want to thank to the Madrid ELLIS (European Laboratory for Learning & Intelligent Systems) unit for its support, and to all patients who who selflessly took part in the study.

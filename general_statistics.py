@@ -6,12 +6,14 @@ def load_data():
     """
     Load the dataset from the CSV file.
     """
-    df_hc = pd.read_csv("data/metadata/data_hc.csv")
-    df_pd = pd.read_csv("data/metadata/data_pd.csv")
+    df_hc = pd.read_csv("data/version_to_zenodo/metadata/data_hc.csv")
+    df_pd = pd.read_csv("data/version_to_zenodo/metadata/data_pd.csv")
     return df_hc, df_pd
 
 
 def general_statistic():
+    import numpy as np
+
     """
     Print the general statistic of the dataset.
     """
@@ -162,22 +164,72 @@ def general_statistic():
     print(f"Std age for HC: {np.std(df_hc.groupby('ID').first()['Age'])}")
 
     # Bar chart
-    plt.figure(figsize=(14, 6))
+    from matplotlib import pyplot as plt
 
-    # Bar chart for 'Sex'
-    plt.subplot(1, 2, 1)
-    ax1 = sns.countplot(x="Sex", data=df_pd.groupby("ID").first(), palette="Set2")
-    ax1.set_xticks(range(2), labels=["Female", "Male"])
-    plt.title("Sex distribution for PD group.")
+    import matplotlib.pyplot as plt
+    import numpy as np
 
-    plt.subplot(1, 2, 2)
-    axs = sns.countplot(x="Sex", data=df_hc.groupby("ID").first(), palette="Set2")
-    axs.set_xticks(range(2), labels=["Female", "Male"])
-    plt.title("Sex distribution for HC group.")
+    # Assuming df_pd is defined and imported earlier
 
+    fig, axs = plt.subplots(1, 2, figsize=(20, 5), sharey=True)
+
+    x_axis = ["Female", "Male", "N/A"]
+
+    # PD Sex distribution
+    pd_counts = np.concatenate(
+        (df_pd.groupby("ID").first()["Sex"].value_counts().sort_index().values, [0])
+    )
+    bars_pd = axs[0].bar(
+        x_axis,
+        pd_counts,
+        color="skyblue",
+        alpha=0.7,
+        label="PD",
+    )
+    for bar in bars_pd:
+        height = bar.get_height()
+        axs[0].text(
+            bar.get_x() + bar.get_width() / 2.0,
+            height,
+            f"{int(height)}",
+            ha="center",
+            va="bottom",
+            fontsize=10,
+        )
+    axs[0].legend()
+    axs[0].set_title("PD Sex Distribution", fontsize=14)
+    axs[0].set_ylabel("Count", fontsize=12)
+
+    # HC Sex distribution
+    hc_counts = np.concatenate(
+        (df_hc.groupby("ID").first()["Sex"].value_counts().sort_index().values, [1])
+    )
+    bars_hc = axs[1].bar(
+        x_axis,
+        hc_counts,
+        color="red",
+        alpha=0.7,
+        label="HC",
+    )
+    for bar in bars_hc:
+        height = bar.get_height()
+        axs[1].text(
+            bar.get_x() + bar.get_width() / 2.0,
+            height,
+            f"{int(height)}",
+            ha="center",
+            va="bottom",
+            fontsize=10,
+        )
+    axs[1].legend()
+    axs[1].set_title(
+        "HC Sex Distribution",
+        fontsize=14,
+    )
+
+    # Improve layout
     plt.tight_layout()
-    plt.show()
-    plt.savefig("sex_distro_distribution.png")
+    plt.savefig("sex_distribution.png", dpi=300)
 
     # Print the value counts of the Diagnosis column
     print("=============== Diagnosis ===============")

@@ -6,8 +6,8 @@ def load_data():
     """
     Load the dataset from the CSV file.
     """
-    df_hc = pd.read_csv("data/version_to_zenodo/metadata/data_hc.csv")
-    df_pd = pd.read_csv("data/version_to_zenodo/metadata/data_pd.csv")
+    df_hc = pd.read_csv("data/version_to_zenodo/metadata/metadata_hc.csv")
+    df_pd = pd.read_csv("data/version_to_zenodo/metadata/metadata_pd.csv")
     return df_hc, df_pd
 
 

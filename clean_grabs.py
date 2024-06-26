@@ -298,8 +298,8 @@ for file in os.listdir(path_folder):
         df_hc = df[df["ID"].isin(hc["ID"])]
 
         # Append to the final dataframes
-        f_df_pd = f_df_pd.append(df_pd)
-        f_df_hc = f_df_hc.append(df_hc)
+        f_df_pd = pd.concat([f_df_pd, df_pd])
+        f_df_hc = pd.concat([f_df_hc, df_hc])
 
 # Asser that none ID is in both dataframes
 assert f_df_pd["ID"].isin(f_df_hc["ID"]).sum() == 0

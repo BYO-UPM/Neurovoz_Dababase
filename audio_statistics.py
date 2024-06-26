@@ -2,14 +2,58 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import os
+import librosa
+
+
+def get_wav_duration(file_path):
+    try:
+        duration = librosa.get_duration(filename=file_path)
+        failed = None
+    except Exception as e:
+        print(f"Error in {file_path}: {e}")
+        # Remove the file
+        os.remove(file_path)
+        failed = file_path
+        duration = 0.0
+    return duration, failed
+
+
+def calculate_total_audio_duration(directory):
+    total_duration = 0.0
+    n_failed = 0
+    total_audio_files = 0
+    for root, _, files in os.walk(directory):
+        for file in files:
+            if file.endswith(".wav"):
+                file_path = os.path.join(root, file)
+                duration, failed = get_wav_duration(file_path)
+                total_audio_files += 1
+                if failed:
+                    n_failed += 1
+                total_duration += duration
+    print("Total number of failed audios:", n_failed)
+    print("Total number of audio files:", total_audio_files)
+    return total_duration
+
+
+def main():
+    directory = input("Enter the directory path: ")
+    total_duration_seconds = calculate_total_audio_duration(directory)
+    total_duration_hours = total_duration_seconds / 3600
+    print(f"Total audio duration: {total_duration_hours:.2f} hours")
+
+
+if __name__ == "__main__":
+    main()
 
 
 def load_data():
     """
     Load the dataset from the CSV file.
     """
-    df_hc = pd.read_csv("data/metadata/data_hc.csv")
-    df_pd = pd.read_csv("data/metadata/data_pd.csv")
+    df_hc = pd.read_csv("data/version_to_zenodo/metadata/metadata_hc.csv")
+    df_pd = pd.read_csv("data/version_to_zenodo/metadata/metadata_pd.csv")
     return df_hc, df_pd
 
 
@@ -195,11 +239,3 @@ def general_statistic():
 
     plt.tight_layout()
     plt.show()
-
-
-def main():
-    general_statistic()
-
-
-if __name__ == "__main__":
-    main()

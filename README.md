@@ -5,7 +5,7 @@ The dataset comprises 2,903 audio files, with an average of $26.88 \pm 3.35$ aud
 
 ## Resources
 
-If you use this dataset, please cite both this Zenodo and the arXiv preprint:
+If you use this dataset, please cite both this Zenodo and the Journal paper describing the dataset:
 
 * **Journal publication:** J. Mendes-Laureano, J. A. Gómez-García, A. Guerrero-López,E. Luque-Buzo, J. D. Arias-Londoño, F. J. Grandas-Pérez, and J. I. Godino-Llorente, “Neurovoz: a castillian spanish corpus of parkinsonian speech,” Scientific Data, 11, 1367 (2024).
 Link: [https://www.nature.com/articles/s41597-024-04186-z](https://www.nature.com/articles/s41597-024-04186-z)
